@@ -1,106 +1,112 @@
 <!doctype html>
-<html lang="en" class="">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NORMAL Archive</title>
-    <link rel="stylesheet" href="./resources/index.css"> <!--this links your HTML file to your CSS style sheet in resources folder-->
-    <link rel="icon" type="image/x-icon" href="./resources/"> <!--In href="" after resources, type in your file name to link an image for your favicon-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="./resources/index.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Normal Archive</title>
+
 </head>
 
 <body>
-<!--If you want to have a header with a graphic 'logo' you make for your archive, a link or menu to navigate to other page(s)-->
-<div class="page">
 
-    <!-- Top bars -->
-    <div class="topbar">
-      Collaborative Archive - 2026 @Rhode Island School of Design
-    </div>
-    <div class="topbar">
-      COURSE: Activating Networks, Gathering Knowledge: Research as Creative, Collaborative Practice
-    </div>
+  <div class="nav">
+  <a href="#" class="nav-btn">ABOUT</a>
+  <a href="#" class="nav-btn">SURVEY</a>
+</div>
 
-    <!-- Main frame area -->
-    <div class="frame">
+<div class="logo-wrap">
+  <img src="./resources/normallogo.png" class="logo">
+</div>
 
-      <!-- Nav buttons -->
-      <div class="nav">
-        <a class="nav-btn" href="default.asp">ABOUT</a>
-        <a class="nav-btn" href="contact.asp">SURVEY</a>
-      </div>
+<div class="section-box">
+  <h2>NORMAL PEOPLE LOVE:</h2>
+  <div id="love-grid"></div>
+</div>
 
-      <!-- Title -->
-      <div class="hero">
-        <div class="hero">Logo here</div>
-      </div>
-
-      <!-- Three text boxes (your layout mock boxes) -->
-      <div class="box-row">
-        <div class="card">
-          <div class="corner tl"></div><div class="corner tr"></div>
-          <div class="corner bl"></div><div class="corner br"></div>
-          <p>Response 01 Here</p>
-        </div>
-
-        <div class="card">
-          <div class="corner tl"></div><div class="corner tr"></div>
-          <div class="corner bl"></div><div class="corner br"></div>
-          <p>Response 02 Here</p>
-        </div>
-
-        <div class="card">
-          <div class="corner tl"></div><div class="corner tr"></div>
-          <div class="corner bl"></div><div class="corner br"></div>
-          <p>Response 03 Here</p>
-        </div>
-      </div>
-
-      <!-- Google sheet entries will appear here -->
-      <div class="grid"></div>
-
-    </div>
-  </div>
-
-
-
-
-<!-- ****************************************************************************
-Below is javascript for connecting your google sheet to autopopulate the HTML-->
+<div class="section-box">
+  <h2>NORMAL PEOPLE HATE:</h2>
+  <div id="hate-grid"></div>
+</div>
 
 <script>
-    var SPREADSHEET_ID = "1-NxvzA9oMAS-kQ79ZVWKck2N4bx9Tt_PZWTESrgQwYk"; //<-- put spreadsheet ID from URL here
-    var TAB_NAME = "tab1"; // Make sure it has the correct sheet name from bottom of webpage
+const SPREADSHEET_ID = "1Mx799RbxJYIMi4Q2dzfpGHz1PJ4BjSNErYRXIOe0oLQ";
+const TAB_NAME = "tab1";
 
+const url =
+  `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?sheet=${encodeURIComponent(TAB_NAME)}&tqx=out:json`;
 
-$(document).ready(function () {
-  $.getJSON("https://opensheet.elk.sh/" + SPREADSHEET_ID + "/" + TAB_NAME, function (data) {
-    
-    console.log(data); 
-    
-  
-    data.forEach(function (entry, index) {
-      
-      console.log(entry);
-      //replace header1, header2, etc. with the column names from your google sheet
-      $(`<section> 
-            <p>` + entry.Timestamp + `</p>
-            <p>` + entry.Love + `</p>
-            <p>` + entry.Hate + `</p>
-            <p>` + entry.In + `</p>
-            <p>` + entry.Ex + `</p>
-            <p>` + entry.Def + `</p>
-            <p>` + entry.Owndef + `</p>
-            <p>` + entry.Edu + `</p>
-            <p>` + entry.Syn + `</p>
-         </section>`)
-        .appendTo(".grid");
-    });
-  });  
+const seenLove = new Set();
+const seenHate = new Set();
+
+function loadData(){
+
+fetch(url)
+.then(res => res.text())
+.then(text => {
+
+  const json = JSON.parse(text.substring(47).slice(0,-2));
+  const rows = json.table.rows;
+
+  const loveGrid = document.getElementById("love-grid");
+  const hateGrid = document.getElementById("hate-grid");
+
+  rows.forEach(r => {
+
+    const timestamp = r.c[0]?.v ?? "";
+    const love = (r.c[1]?.v ?? "").toString().trim();
+    const hate = (r.c[2]?.v ?? "").toString().trim();
+
+    /* LOVE */
+    if(love){
+      const key = timestamp + love;
+      if(!seenLove.has(key)){
+        seenLove.add(key);
+
+        const row = document.createElement("div");
+        row.className = "section-row";
+        row.innerHTML = `
+          <div class="section-num"></div>
+          <div class="section-text">${love}</div>
+        `;
+        loveGrid.appendChild(row);
+      }
+    }
+
+    /* HATE */
+    if(hate){
+      const key = timestamp + hate;
+      if(!seenHate.has(key)){
+        seenHate.add(key);
+
+        const row = document.createElement("div");
+        row.className = "section-row";
+        row.innerHTML = `
+          <div class="section-num"></div>
+          <div class="section-text">${hate}</div>
+        `;
+        hateGrid.appendChild(row);
+      }
+    }
+
+  });
+
+  /* Renumber */
+  document.querySelectorAll("#love-grid .section-num").forEach((el,i)=>{
+    el.textContent = String(i+1).padStart(3,"0");
+  });
+
+  document.querySelectorAll("#hate-grid .section-num").forEach((el,i)=>{
+    el.textContent = String(i+1).padStart(3,"0");
+  });
+
 });
+}
+
+loadData();
+setInterval(loadData,5000); // 
 </script>
 
-<!--This code was provided in Avrie Allen's Wintersession course at RISD, Activating Networks, Gathering Knowledge and was initially inspired by Chia Amisola's sheet sites tutorial with Developh-->
 </body>
 </html>
