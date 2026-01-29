@@ -3,110 +3,145 @@
 <head>
   <link rel="stylesheet" href="./resources/index.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Normal Archive</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Normal Archive</title>
 </head>
 
 <body>
 
+  <div class="page-border">
+
+  <div class="corner tl"></div>
+<div class="corner tr"></div>
+<div class="corner bl"></div>
+<div class="corner br"></div>
+
+
   <div class="nav">
-  <a href="#" class="nav-btn">ABOUT</a>
-  <a href="#" class="nav-btn">SURVEY</a>
+    <a href="about.html" class="nav-btn">ABOUT</a>
+    <a href="#" class="nav-btn">NORMAL DESIGN</a>
+  </div>
+
+ <div class="logo-wrap">
+  <a href="index.html">
+    <img src="./resources/normallogo.png" class="logo" alt="Normal Archive Logo">
+  </a>
 </div>
 
-<div class="logo-wrap">
-  <img src="./resources/normallogo.png" class="logo">
-</div>
+  <div id="love-section" class="section-box section-toggle">
+    <h2>NORMAL PEOPLE LOVE:</h2>
+    <div id="love-responses">
+      <div id="love-grid"></div>
+    </div>
+  </div>
 
-<div class="section-box">
-  <h2>NORMAL PEOPLE LOVE:</h2>
-  <div id="love-grid"></div>
-</div>
+  <div id="hate-section" class="section-box section-toggle">
+    <h2>NORMAL PEOPLE HATE:</h2>
+    <div id="hate-responses">
+      <div id="hate-grid"></div>
+    </div>
+  </div>
 
-<div class="section-box">
-  <h2>NORMAL PEOPLE HATE:</h2>
-  <div id="hate-grid"></div>
-</div>
+  <div id="in-section" class="section-box section-toggle">
+    <h2>WHAT SOCIETY CONSIDERS NORMAL:</h2>
+    <div id="in-responses">
+      <div id="in-grid"></div>
+    </div>
+  </div>
+  </div>
+  </body>
 
-<script>
-const SPREADSHEET_ID = "1Mx799RbxJYIMi4Q2dzfpGHz1PJ4BjSNErYRXIOe0oLQ";
-const TAB_NAME = "tab1";
+  <script>
+/// close
+  $("#love-responses, #hate-responses, #in-responses").hide();
 
-const url =
-  `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?sheet=${encodeURIComponent(TAB_NAME)}&tqx=out:json`;
-
-const seenLove = new Set();
-const seenHate = new Set();
-
-function loadData(){
-
-fetch(url)
-.then(res => res.text())
-.then(text => {
-
-  const json = JSON.parse(text.substring(47).slice(0,-2));
-  const rows = json.table.rows;
-
-  const loveGrid = document.getElementById("love-grid");
-  const hateGrid = document.getElementById("hate-grid");
-
-  rows.forEach(r => {
-
-    const timestamp = r.c[0]?.v ?? "";
-    const love = (r.c[1]?.v ?? "").toString().trim();
-    const hate = (r.c[2]?.v ?? "").toString().trim();
-
-    /* LOVE */
-    if(love){
-      const key = timestamp + love;
-      if(!seenLove.has(key)){
-        seenLove.add(key);
-
-        const row = document.createElement("div");
-        row.className = "section-row";
-        row.innerHTML = `
-          <div class="section-num"></div>
-          <div class="section-text">${love}</div>
-        `;
-        loveGrid.appendChild(row);
-      }
-    }
-
-    /* HATE */
-    if(hate){
-      const key = timestamp + hate;
-      if(!seenHate.has(key)){
-        seenHate.add(key);
-
-        const row = document.createElement("div");
-        row.className = "section-row";
-        row.innerHTML = `
-          <div class="section-num"></div>
-          <div class="section-text">${hate}</div>
-        `;
-        hateGrid.appendChild(row);
-      }
-    }
-
+///open
+  $("#love-section").on("click", function () {
+    $("#love-responses").toggle();
+    $(this).toggleClass("open");
   });
 
-  /* Renumber */
-  document.querySelectorAll("#love-grid .section-num").forEach((el,i)=>{
-    el.textContent = String(i+1).padStart(3,"0");
+  $("#hate-section").on("click", function () {
+    $("#hate-responses").toggle();
+    $(this).toggleClass("open");
   });
 
-  document.querySelectorAll("#hate-grid .section-num").forEach((el,i)=>{
-    el.textContent = String(i+1).padStart(3,"0");
+  $("#in-section").on("click", function () {
+    $("#in-responses").toggle();
+    $(this).toggleClass("open");
   });
 
-});
-}
+  // -------------------------
+  // Google Sheet load
+  // -------------------------
+  const SPREADSHEET_ID = "1Mx799RbxJYIMi4Q2dzfpGHz1PJ4BjSNErYRXIOe0oLQ";
+  const TAB_NAME = "tab1";
+  const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?sheet=${encodeURIComponent(TAB_NAME)}&tqx=out:json`;
 
-loadData();
-setInterval(loadData,5000); // 
+  const seenLove = new Set();
+  const seenHate = new Set();
+  const seenIn = new Set();
+
+  function loadData(){
+    fetch(url)
+      .then(res => res.text())
+      .then(text => {
+        const json = JSON.parse(text.substring(47).slice(0,-2));
+        const rows = json.table.rows;
+
+        const loveGrid = document.getElementById("love-grid");
+        const hateGrid = document.getElementById("hate-grid");
+        const inGrid   = document.getElementById("in-grid");
+
+        rows.forEach(r => {
+          const timestamp = r.c[0]?.v ?? "";
+          const love = (r.c[1]?.v ?? "").toString().trim(); // B
+          const hate = (r.c[2]?.v ?? "").toString().trim(); // C
+          const inn  = (r.c[3]?.v ?? "").toString().trim(); // D
+
+          if(love){
+            const key = `${timestamp}__${love}`;
+            if(!seenLove.has(key)){
+              seenLove.add(key);
+              const row = document.createElement("div");
+              row.className = "section-row";
+              row.innerHTML = `<div class="section-num"></div><div class="section-text">${love}</div>`;
+              loveGrid.appendChild(row);
+            }
+          }
+
+          if(hate){
+            const key = `${timestamp}__${hate}`;
+            if(!seenHate.has(key)){
+              seenHate.add(key);
+              const row = document.createElement("div");
+              row.className = "section-row";
+              row.innerHTML = `<div class="section-num"></div><div class="section-text">${hate}</div>`;
+              hateGrid.appendChild(row);
+            }
+          }
+
+          if(inn){
+            const key = `${timestamp}__${inn}`;
+            if(!seenIn.has(key)){
+              seenIn.add(key);
+              const row = document.createElement("div");
+              row.className = "section-row";
+              row.innerHTML = `<div class="section-num"></div><div class="section-text">${inn}</div>`;
+              inGrid.appendChild(row);
+            }
+          }
+        });
+
+  
+        document.querySelectorAll("#love-grid .section-num").forEach((el,i)=> el.textContent = String(i+1).padStart(3,"0"));
+        document.querySelectorAll("#hate-grid .section-num").forEach((el,i)=> el.textContent = String(i+1).padStart(3,"0"));
+        document.querySelectorAll("#in-grid .section-num").forEach((el,i)=> el.textContent = String(i+1).padStart(3,"0"));
+      })
+      .catch(err => console.error("Sheet load error:", err));
+  }
+
+  loadData();
+  setInterval(loadData, 5000);
 </script>
-
-</body>
-</html>

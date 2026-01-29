@@ -1,33 +1,46 @@
+.page-border{
+  min-height: calc(100vh - 80px);
+  border: 2px solid #fd8e61;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  padding-left: 80px;
+  padding-right: 80px;
+  box-sizing: border-box;
+}
+
 .nav{
-  position: static;   /* 또는 이 줄 자체 삭제해도 됨 */
+  position: static;
   display: flex;
   gap: 18px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .nav-btn{
   text-decoration: none;
-  color: #ff8454;
-  border: 3px solid #ff8454;
-  padding: 10px 18px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  color: #fd8e61;
+  border: 2px solid #fd8e61;
+  padding: 10px 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
   font-size: 14px;
+  font-family: Arial;
 }
 
 .nav-btn:hover{
-  background:#ff8454;
+  background:#fd8e61;
   color:white;
 }
 
 .logo-wrap{
   text-align: center;
-  margin-top: 100px; 
-  margin-bottom: 80px; 
+  margin-top: 100px;
+  margin-bottom: 80px;
 }
 
 .logo{
-  max-width: 500px;   /* 필요하면 조절 */
+  display: inline-block;
+  max-width: 550px;
+  height: auto;
 }
 
 body{
@@ -35,41 +48,156 @@ body{
   font-family: Arial;
 }
 
-/* Section title */
-h2{
-  color:#ff8454;
-  text-align:left;
-  font-size: 23px;
-  font-weight: 250;
-  width:min(1000px,92vw);
-  margin: 0 auto 10px auto;
+/* ---------------------------
+   TABLE SYSTEM VARIABLES
+--------------------------- */
+:root{
+  --num-col: 45px;       /* 숫자 칼럼 너비 (001 영역) */
+  --divider: 2.5px;        /* 선 두께 */
+  --orange: #fd8e61;
+  --box-pad: 24px;       /* 박스 테두리에서 내용까지 여백 */
+  --title-pad-y: 14px;   /* 제목 위아래 패딩 */
+  --gap-after-line: 10px;/* 가로선 아래 여백 */
 }
 
-/* Orange box */
+/* ---------------------------
+   SECTION BOX (outer border)
+--------------------------- */
 .section-box{
-  border:3px solid #ff7a45;
-  padding:16px;
-  width:min(1000px,92vw);
-  margin: 0 auto 40px auto;   /* ← 이게 핵심 */
+  border: 2px solid #fd8e61;
+  background: rgba(255,132,84,0.08);
+  width: min(850px,92vw);
+  margin: 10px auto;
+  padding: 0;                 /* ✅ 중요: padding은 여기서 없애야 선이 테두리까지 붙음 */
+  box-sizing: border-box;
 }
 
-/* Rows */
+/* 클릭 가능 */
+.section-toggle{ cursor:pointer; }
+
+/* hover는 "닫혀있을 때"만 살짝 예쁘게 */
+.section-toggle:hover{
+  background: rgba(255,132,84,0.06);
+}
+
+/* ---------------------------
+   TITLE (h2)
+--------------------------- */
+.section-box h2{
+  color: var(--orange);
+  text-align: left;
+  font-size: 18px;
+  font-weight: 550;
+  font-family: Arial;
+  margin: 0;
+  padding: var(--title-pad-y) var(--box-pad);
+  border-bottom: none;         /* 닫혀있을 때는 선 없음 */
+  box-sizing: border-box;
+}
+
+/* 열렸을 때만 h2 아래 가로선 */
+.section-box.open h2{
+  border-bottom: var(--divider) solid var(--orange);
+}
+
+/* hover 시 텍스트 색 바꾸고 싶으면 */
+.section-toggle:hover h2{
+    background: rgba(255,132,84,0.2);
+}
+
+/* ---------------------------
+   RESPONSES WRAPPER
+--------------------------- */
+#love-responses,
+#hate-responses,
+#in-responses{
+  position: relative;
+  padding: var(--gap-after-line) var(--box-pad) var(--box-pad) var(--box-pad);
+  box-sizing: border-box;
+}
+
+/* ✅ 세로선: 테두리 기준이 아니라, responses padding 기준으로 계산해서 "테이블처럼" 딱 맞춤 */
+#love-responses::before,
+#hate-responses::before,
+#in-responses::before{
+  content:"";
+  position:absolute;
+  top: 0;   /* ✅ 가로선 바로 아래에서 시작 (h2가 border-bottom으로 선을 그리니까 딱 만남) */
+  bottom: 0;
+  left: calc(var(--box-pad) + var(--num-col));
+  width: var(--divider);
+  background: var(--orange);
+}
+
+/* ---------------------------
+   ROW LAYOUT
+--------------------------- */
 .section-row{
-  display:grid;
-  grid-template-columns:60px 1fr;
-  gap:20px;
-  padding:4px 0;
-  color:#ff8454;
-  font-size:18px;
+  display: grid;
+  grid-template-columns: var(--num-col) 1fr;
+  gap: 0;
+  padding: 4px 0;
+  color: var(--orange);
+  font-size: 18px;
+  font-family: Arial;
+  box-sizing: border-box;
 }
 
-/* Numbers */
+/* 숫자 컬럼: 숫자를 세로선에 더 가깝게/멀게 하고 싶으면 여기 */
 .section-num{
   font-variant-numeric: tabular-nums;
+  padding-right: 25px;   /* ✅ 숫자와 세로선 간격 (줄이면 더 붙음) */
 }
 
-/* Text */
+/* 답변 시작점: 세로선과 더 가깝게/멀게 하고 싶으면 여기 */
 .section-text{
+  padding-left: 25px;    /* ✅ 답변과 세로선 간격 (0~16 추천) */
   word-break: break-word;
+}
+
+/* row hover */
+.section-row:hover{
+  background-color: var(--orange);
+  color: white;
+  cursor: cell;
+}
+
+/* hover 시 내부 글자도 하얗게 */
+.section-row:hover .section-num,
+.section-row:hover .section-text{
+  color: white;
+}
+
+.page-border{
+  position: relative;
+}
+
+/* 공통 코너 */
+.corner{
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: #fd8e61;
+}
+
+/* 각 위치 */
+.corner.tl{
+  top: 0;
+  left: 0;
+}
+
+.corner.tr{
+  top: 0;
+  right: 0;
+}
+
+.corner.bl{
+  bottom: 0;
+  left: 0;
+}
+
+.corner.br{
+  bottom: 0;
+  right: 0;
 }
 
