@@ -9,10 +9,10 @@
 }
 
 .nav{
-  position: static;
   display: flex;
   gap: 18px;
   margin-bottom: 30px;
+  justify-content: flex-end;   /* ✅ 오른쪽 정렬 */
 }
 
 .nav-btn{
@@ -32,20 +32,19 @@
 }
 
 .logo-wrap{
-  text-align: center;
-  margin-top: 100px;
-  margin-bottom: 80px;
+  text-align: left;
+  margin-top: -80px;
+  margin-bottom: 20px;
 }
 
 .logo{
-  display: inline-block;
-  max-width: 550px;
-  height: auto;
+  max-width: 180px;
 }
 
 body{
   margin:40px;
   font-family: Arial;
+  background: #f5f5f5;
 }
 
 /* ---------------------------
@@ -58,6 +57,7 @@ body{
   --box-pad: 24px;       /* 박스 테두리에서 내용까지 여백 */
   --title-pad-y: 14px;   /* 제목 위아래 패딩 */
   --gap-after-line: 10px;/* 가로선 아래 여백 */
+    --panel-pad: 30px; 
 }
 
 /* ---------------------------
@@ -66,10 +66,9 @@ body{
 .section-box{
   border: 2px solid #fd8e61;
   background: rgba(255,132,84,0.08);
-  width: min(850px,92vw);
+  flex: 45%;
   margin: 10px auto;
-  padding: 0;                 /* ✅ 중요: padding은 여기서 없애야 선이 테두리까지 붙음 */
-  box-sizing: border-box;
+  padding: 0;         
 }
 
 /* 클릭 가능 */
@@ -95,6 +94,17 @@ body{
   box-sizing: border-box;
 }
 
+#flex {
+  display: flex;
+  width: 70vw;
+  height: auto;
+  margin: auto;
+  flex-wrap: wrap;
+  gap:10px;
+    align-items: flex-start;
+}
+
+
 /* 열렸을 때만 h2 아래 가로선 */
 .section-box.open h2{
   border-bottom: var(--divider) solid var(--orange);
@@ -114,19 +124,6 @@ body{
   position: relative;
   padding: var(--gap-after-line) var(--box-pad) var(--box-pad) var(--box-pad);
   box-sizing: border-box;
-}
-
-/* ✅ 세로선: 테두리 기준이 아니라, responses padding 기준으로 계산해서 "테이블처럼" 딱 맞춤 */
-#love-responses::before,
-#hate-responses::before,
-#in-responses::before{
-  content:"";
-  position:absolute;
-  top: 0;   /* ✅ 가로선 바로 아래에서 시작 (h2가 border-bottom으로 선을 그리니까 딱 만남) */
-  bottom: 0;
-  left: calc(var(--box-pad) + var(--num-col));
-  width: var(--divider);
-  background: var(--orange);
 }
 
 /* ---------------------------
@@ -201,3 +198,289 @@ body{
   right: 0;
 }
 
+#love-responses,
+#hate-responses,
+#in-responses,
+#ex-responses,
+#def-responses,
+#owndef-responses,
+#edu-responses,
+#syn-responses{
+  position: relative;
+  margin-top: calc(-1 * var(--divider)); /* ✅ 추가 */
+  padding: 0 var(--box-pad) var(--box-pad) var(--box-pad);
+  box-sizing: border-box;
+
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+
+
+
+#love-responses::-webkit-scrollbar,
+#hate-responses::-webkit-scrollbar,
+#in-responses::-webkit-scrollbar,
+#ex-responses::-webkit-scrollbar,
+#def-responses::-webkit-scrollbar,
+#owndef-responses::-webkit-scrollbar,
+#edu-responses::-webkit-scrollbar,
+#syn-responses::-webkit-scrollbar{
+  width: 8px;
+}
+
+#love-responses::-webkit-scrollbar-thumb,
+#hate-responses::-webkit-scrollbar-thumb,
+#in-responses::-webkit-scrollbar-thumb,
+#ex-responses::-webkit-scrollbar-thumb,
+#def-responses::-webkit-scrollbar-thumb,
+#owndef-responses::-webkit-scrollbar-thumb,
+#edu-responses::-webkit-scrollbar-thumb,
+#syn-responses::-webkit-scrollbar-thumb{
+  background: rgba(253,142,97,0.55);
+  border-radius: 0px;
+}
+
+#love-responses::-webkit-scrollbar-track,
+#hate-responses::-webkit-scrollbar-track,
+#in-responses::-webkit-scrollbar-track,
+#ex-responses::-webkit-scrollbar-track,
+#def-responses::-webkit-scrollbar-track,
+#owndef-responses::-webkit-scrollbar-track,
+#edu-responses::-webkit-scrollbar-track,
+#syn-responses::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+#love-grid,
+#hate-grid,
+#in-grid,
+#ex-grid,
+#def-grid,
+#owndef-grid,
+#edu-grid,
+#syn-grid{
+  position: relative;
+  padding-top: var(--gap-after-line); /* ✅ 기존 4px 대신 통일 */
+}
+
+
+#love-responses,
+#hate-responses,
+#in-responses,
+#ex-responses,
+#def-responses,
+#owndef-responses,
+#edu-responses,
+#syn-responses{
+  /* layout */
+  box-sizing: border-box;
+  padding: var(--gap-after-line) var(--box-pad) var(--box-pad) var(--box-pad);
+
+  /* scroll */
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* ✅ 세로선: background로 그리면 절대 안 끊김 */
+  background-image: linear-gradient(var(--orange), var(--orange));
+  background-repeat: no-repeat;
+  background-size: var(--divider) 100%;
+  background-position: calc(var(--box-pad) + var(--num-col)) 0;
+}
+
+.section-box h2{
+  position: relative;
+}
+
+
+.section-box h2::before{
+  content:"";
+  position:absolute;
+  right:18px;           /* ✅ 오른쪽 정렬 */
+  top:50%;
+  transform: translateY(-50%);
+
+  width: 0;
+  height: 0;
+
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 10px solid var(--orange);
+}
+
+/* 안쪽 흰 삼각형 */
+.section-box h2::after{
+  content:"";
+  position:absolute;
+  right:19.5px;         /* ✅ 살짝 안쪽 */
+  top:50%;
+  transform: translateY(-48%);
+
+  width: 0;
+  height: 0;
+
+  border-left: 5.5px solid transparent;
+  border-right: 5.5px solid transparent;
+  border-top: 8px solid #fd8e61;  /* body 배경색 */
+}
+
+.section-box.open h2::before{
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.section-box.open h2::after{
+  transform: translateY(-48%) rotate(180deg);
+}
+
+/* ---------------------------
+   TOP PANELS (ABOUT + INSTRUCTIONS)
+--------------------------- */
+.top-panels{
+  width: 70vw;
+  margin: 0 auto 40px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.panel{
+  border: 2px solid var(--orange);
+  background: rgba(255,132,84,0.08);
+  padding: var(--panel-pad);   /* ✅ 변수 사용 */
+  box-sizing: border-box;
+  height: 100%;
+  padding: 6px var(--panel-pad) var(--panel-pad) var(--panel-pad);
+}
+
+.panel-title{
+  display: block;        /* ✅ 추가 */
+  width: 100%;           /* ✅ 추가 */
+  position: relative;    /* ✅ 유지 */
+  border-bottom: none;   /* ✅ 유지 */
+    border-bottom: none !important;
+      color: var(--orange) !important;
+}
+
+.panel-title::after{
+  content:"";
+  display:block;                       /* ✅ absolute 말고 block으로 */
+  height: var(--divider);
+  background: var(--orange);
+
+  /* ✅ 패널 padding만큼 좌우로 늘려서 박스 끝까지 */
+  margin-left: calc(-1 * var(--panel-pad));
+  margin-right: calc(-1 * var(--panel-pad));
+
+  margin-top: 12px;                    /* 선이 제목 아래에 오도록 */
+}
+
+.about-panel .panel-title{
+  color: #fff6ef !important;
+}
+.about-panel .panel-title::after{
+  background: #fff6ef !important;
+}
+
+.about-panel .panel-title::after{
+  background: #fff6ef;
+}
+
+
+.panel-body{
+  margin: 0;
+  color: var(--orange);
+  font-family: Arial;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* 오른쪽 패널 내부 레이아웃 */
+.instructions-content{
+  display: grid;
+  grid-template-columns: 1fr 155px;
+  gap: 18px;
+  align-items: start;
+}
+
+.instructions-lead{
+  margin: 0 0 12px 0;
+  color: var(--orange);
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.instructions-list{
+  margin: 0;
+  padding-left: 18px;
+  color: var(--orange);
+  font-family: Arial;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.qr-wrap{
+  border: 2px solid var(--orange);
+  background: rgba(255,132,84,0.08);
+    transform: translateY(-6px);
+  width: 150px;
+  height: 150px;
+  margin-top: 10px;   /* 더 아래 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.qr-img{
+  max-width: 90%;
+  max-height: 90%;
+  display: block;
+  filter: invert(42%) sepia(92%) saturate(620%) hue-rotate(347deg) brightness(102%) contrast(95%);
+}
+
+/* ABOUT panel inverted */
+.about-panel{
+  background: var(--orange);
+  border: 2px solid var(--orange);
+}
+
+/* ABOUT 제목/본문 글씨 색 */
+.about-panel .panel-title,
+.about-panel .panel-body{
+  color: #fff6ef; /* ✅ body 배경색이랑 맞추기 */
+}
+
+/* ABOUT 제목 아래 가로선도 같은 색 */
+.about-panel .panel-title{
+  border-bottom: var(--divider) solid #fff6ef;
+}
+
+/* 두 패널을 같은 높이로 */
+.top-panels{
+  align-items: stretch;
+}
+
+/* Instructions 내부도 세로로 꽉 차게 */
+.instructions-content{
+  height: 100%;
+  margin-top: 50px;
+}
+
+.panel-divider{
+  height: 2px;
+  background: var(--orange);
+  margin-top: 12px;
+
+  margin-left: calc(-1 * var(--panel-pad));
+  margin-right: calc(-1 * var(--panel-pad));
+  width: calc(100% + (2 * var(--panel-pad)));
+}
+
+.main-content{
+  margin-top: 120px;   /* ← 이 값으로 전체 아래 이동 */
+}
