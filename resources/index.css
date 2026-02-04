@@ -33,12 +33,12 @@
 
 .logo-wrap{
   text-align: left;
-  margin-top: -80px;
+  margin-top: -70px;
   margin-bottom: 20px;
 }
 
 .logo{
-  max-width: 180px;
+  max-width: 200px;
 }
 
 body{
@@ -483,4 +483,57 @@ body{
 
 .main-content{
   margin-top: 120px;   /* ← 이 값으로 전체 아래 이동 */
+}
+
+/* =========================
+   DESIGN PAGE COLOR INVERT
+========================= */
+
+/* body 자체를 정확히 찍어서 덮어쓰기 */
+body.design-page{
+  background: var(--orange) !important;
+  color: #f1f1f1 !important;
+}
+
+/* page border */
+body.design-page .page-border{
+  border-color: #f1f1f1 !important;
+}
+
+/* corners */
+body.design-page .corner{
+  background: #f1f1f1 !important;
+}
+
+/* nav button */
+body.design-page .nav-btn{
+  color: #f1f1f1 !important;
+  border-color: #f1f1f1 !important;
+}
+
+body.design-page .nav-btn:hover{
+  background: #f1f1f1 !important;
+  color: var(--orange) !important;
+}
+
+/* panels */
+body.design-page .panel{
+  border-color: #f1f1f1 !important;
+  background: rgba(255,255,255,0.08) !important;
+}
+
+/* about panel invert */
+body.design-page .about-panel{
+  background: #f1f1f1 !important;
+}
+
+body.design-page .about-panel .panel-title,
+body.design-page .about-panel .panel-body{
+  color: var(--orange) !important;
+}
+
+/* panel title divider */
+body.design-page .panel-title{
+  border-bottom-color: #f1f1f1 !important;
+  color: #f1f1f1 !important;
 }
