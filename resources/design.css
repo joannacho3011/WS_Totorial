@@ -67,12 +67,24 @@ body{
   display: block;
 }
 
+.content-wrap{
+  width: 70vw;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+
+.caption{
+   margin-top: 30px;
+  color: white;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .n-grid{
-  width: 70vw;              /* 너가 쓰는 top-panels랑 맞추고 싶으면 70vw 추천 */
-  margin: 60px auto 0 auto; /* 위쪽 띄우고 가운데 정렬 */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;                /* 이미지 사이 간격 */
+  gap: 18px;
 }
 
 .n-img{
@@ -91,17 +103,6 @@ body{
   .n-grid{ grid-template-columns: 1fr; }
 }
 
-/* 22,23 두 장 + 텍스트 한 줄에 배치 */
-.design-page .top-row{
-  width: 70vw;
-  margin: 0 auto 40px auto;
-
-  display: grid;
-  grid-template-columns: 320px 320px 260px; /* ✅ 포스터 2장 폭 + 텍스트 폭 고정 */
-  gap: 22px;
-  align-items: end;
-}
-
 /* 포스터 이미지 공통 */
 .design-page .poster{
   width: 600px;
@@ -113,29 +114,9 @@ body{
 .design-page .top-img-22{ transform: translate(0px, 0px); }
 .design-page .top-img-23{ transform: translate(0px, 0px); }
 
-/* 텍스트 박스 */
-.design-page .textbox{
-  width: 260px;           /* ✅ 칸 폭과 동일하게 */
-  color: white;
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 0;              /* ✅ p 기본 마진 제거 */
-  transform: translateX(-35px); /* ✅ 포스터쪽으로 당김(원하면 -20까지) */
-}
-
 /* 포스터 */
 .design-page .poster{
   height:480px;
   width:auto;
   display:block;
-}
-
-/* 텍스트 */
-.design-page .textbox{
-  color: white;
-  font-size: 14px;
-  line-height: 1.5;
-  margin-left: 40px;
-  width: 300px;      /* ✅ 여기 숫자 바꾸면 폭 바뀜 */
-  /* max-width: 460px;  이것도 가능 */
 }
