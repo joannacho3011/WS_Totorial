@@ -54,7 +54,7 @@
           <div class="instructions-content">
             <div class="instructions-text">
               <p class="instructions-lead">
-                Please contribute to the archive by scanning the QR code!
+                Contribute to the archive via the link below and see your response update live on the site.
               </p>
 
               <ul class="instructions-list">
@@ -64,9 +64,10 @@
               </ul>
             </div>
 
-            <div class="qr-wrap">
-              <img src="./resources/qr.png" alt="Survey QR code" class="qr-img" />
-            </div>
+            <a href="https://forms.gle/7TfTMzmZBzVqTnqM7" target="_blank" class="submit-btn">
+  SUBMIT SURVEY
+</a>
+
           </div>
         </div>
       </div>
@@ -332,6 +333,154 @@
 
     loadData();
     setInterval(loadData, 5000);
+
+    // LOVE floating hearts effect
+
+
+const loveBox = document.getElementById("love-section");
+
+let heartInterval = null;
+
+function createHeart() {
+
+  const heart = document.createElement("span");
+  heart.className = "heart";
+  heart.textContent = "♥︎";
+
+  // 랜덤 가로 위치
+  const randomX = Math.random() * loveBox.offsetWidth;
+
+  // 랜덤 크기
+  heart.style.fontSize = (14 + Math.random() * 18) + "px";
+
+  heart.style.left = randomX + "px";
+
+  loveBox.appendChild(heart);
+
+  // 애니메이션 끝나면 제거
+  setTimeout(() => {
+    heart.remove();
+  }, 2000);
+}
+
+loveBox.addEventListener("mouseenter", () => {
+  heartInterval = setInterval(createHeart, 150); // 👈 계속 생성
+});
+
+loveBox.addEventListener("mouseleave", () => {
+  clearInterval(heartInterval);
+});
+
+const hateBox = document.getElementById("hate-section");
+
+let hateInterval = null;
+
+function createBrokenHeart() {
+
+  const heart = document.createElement("span");
+  heart.className = "broken-heart";
+  heart.textContent = "☁︎";
+
+  const randomX = Math.random() * hateBox.offsetWidth;
+
+  heart.style.fontSize = (14 + Math.random() * 18) + "px";
+  heart.style.left = randomX + "px";
+
+  hateBox.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 2000);
+}
+
+hateBox.addEventListener("mouseenter", () => {
+  hateInterval = setInterval(createBrokenHeart, 150);
+});
+
+hateBox.addEventListener("mouseleave", () => {
+  clearInterval(hateInterval);
+});
+
+/* =========================
+   EMOJI FLOAT SYSTEM
+========================= */
+
+function addFloatingEmoji(sectionId, emoji) {
+
+  const box = document.getElementById(sectionId);
+  let interval = null;
+
+  box.style.position = "relative";
+  box.style.overflow = "hidden";
+
+  function createEmoji() {
+    const el = document.createElement("span");
+    el.className = "floating-emoji";
+    el.textContent = emoji;
+
+    const randomX = Math.random() * box.offsetWidth;
+
+    el.style.left = randomX + "px";
+    el.style.fontSize = (14 + Math.random() * 18) + "px";
+
+    box.appendChild(el);
+
+    setTimeout(() => {
+      el.remove();
+    }, 2000);
+  }
+
+  box.addEventListener("mouseenter", () => {
+    interval = setInterval(createEmoji, 150);
+  });
+
+  box.addEventListener("mouseleave", () => {
+    clearInterval(interval);
+  });
+}
+
+
+/* =========================
+   APPLY TO EACH SECTION
+========================= */
+
+addFloatingEmoji("in-section", "✔︎");
+addFloatingEmoji("ex-section", "✘");
+addFloatingEmoji("def-section", "☘︎");
+addFloatingEmoji("owndef-section", "☛");
+addFloatingEmoji("edu-section", "⛪︎");
+addFloatingEmoji("syn-section", "✍︎");
+
+/* BACKGROUND SMILE EFFECT */
+
+let lastSmileTime = 0;
+
+document.addEventListener("mousemove", function(e){
+
+  const now = Date.now();
+
+  // 60ms 이하 간격이면 생성 안 함 (생성량 줄이기)
+  if(now - lastSmileTime < 30) return;
+
+  lastSmileTime = now;
+
+  const isInsideBox = e.target.closest(".section-box, .panel, .nav-btn");
+  if(isInsideBox) return;
+
+  const smile = document.createElement("span");
+  smile.className = "bg-smile";
+  smile.textContent = "☻";
+
+  smile.style.left = e.clientX + "px";
+  smile.style.top = e.clientY + "px";
+
+  document.body.appendChild(smile);
+
+  setTimeout(() => {
+    smile.remove();
+  }, 1200);
+});
+
   </script>
 </body>
 </html>

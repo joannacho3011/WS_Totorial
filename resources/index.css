@@ -400,10 +400,9 @@ body{
 
 /* 오른쪽 패널 내부 레이아웃 */
 .instructions-content{
-  display: grid;
-  grid-template-columns: 1fr 155px;
-  gap: 18px;
-  align-items: start;
+    display: block;
+  width: 100%;
+  margin-top: 24px;
 }
 
 .instructions-lead{
@@ -463,12 +462,6 @@ body{
 /* 두 패널을 같은 높이로 */
 .top-panels{
   align-items: stretch;
-}
-
-/* Instructions 내부도 세로로 꽉 차게 */
-.instructions-content{
-  height: 100%;
-  margin-top: 50px;
 }
 
 .panel-divider{
@@ -536,4 +529,114 @@ body.design-page .about-panel .panel-body{
 body.design-page .panel-title{
   border-bottom-color: #f1f1f1 !important;
   color: #f1f1f1 !important;
+}
+
+
+
+.instructions-panel{
+  position: relative;
+}
+
+.submit-btn{
+  position: absolute;
+  right: 30px;      /* 박스 안쪽 여백 맞추기 */
+  bottom: 30px;
+
+  border: 2px solid var(--orange);
+  padding: 10px 18px;
+  font-size: 13px;
+  font-family: Arial;
+  font-weight: 600;
+  text-decoration: none;
+
+  color: var(--orange);
+  background: transparent;
+
+  transition: 0.2s ease;
+}
+
+.submit-btn:hover{
+  background: var(--orange);
+  color: #f5f5f5;
+}
+
+/* LOVE floating hearts */
+
+#love-section{
+  position: relative;
+  overflow: hidden;
+  color: var(--orange);
+}
+
+.heart{
+  position: absolute;
+  bottom: -10px;              /* 👈 박스 아래에서 시작 */
+  font-size: 20px;
+  pointer-events: none;
+  animation: floatUp 3.5s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-180px) scale(1.4);
+    opacity: 0;
+  }
+}
+
+#hate-section{
+  position: relative;
+  overflow: hidden;
+  color: var(--orange);
+}
+
+.broken-heart{
+  position: absolute;
+  bottom: -10px;
+  pointer-events: none;
+  animation: floatUp 2s linear forwards;
+}
+
+.floating-emoji{
+  position: absolute;
+  bottom: -10px;
+  pointer-events: none;
+  animation: floatUp 2s linear forwards;
+  color: var(--orange);
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-180px) scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* BACKGROUND SMILE TRAIL */
+
+.bg-smile{
+  position: fixed;
+  pointer-events: none;
+  font-size: 27px; /* 18 × 1.5 = 27 */
+  color: var(--orange);
+  animation: smileFade 1.2s ease-out forwards;
+  z-index: 0;
+}
+
+@keyframes smileFade {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-40px) scale(1.4);
+    opacity: 0;
+  }
 }
